@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load cart_tag %}
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    .shopping-cart{
+        border: 1px solid;
+        position: relative;
+        top: 50%;
+        left: 40%;
+        {% comment %} transform: translate(-50%, -50%); {% endcomment %}
+        padding: 1rem;
+        {% comment %} border-radius: .5rem; {% endcomment %}
+        box-shadow: var(--box-shodow);
+        width: 35rem;
+        background: white;
+    }
+    
+    .shopping-cart.active{
+        right: 2rem;
+        transition: .4s linear;
+    }
+    
+    .shopping-cart .box{
+        border: 0.5px solid black;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: relative;
+        margin: 1rem 0;
+    }
+    
+    .shopping-cart .box img{
+        height: 10rem;
+    }
+    
+    .shopping-cart .box .fa-trash{
+        font-size: 2rem;
+        position: absolute;
+        top:50%;
+        right:2rem;
+        cursor: pointer;
+        color: var(--light-color);
+        transform: translateY(-50%);
+    }
+    
+    .shopping-cart .box .fa-trash:hover{
+        color: var(--green);
+    }
+    
+    .shopping-cart .box .content h3{
+        color:var(--black);
+        font-size: 1.7rem;
+        padding-bottom: 1rem;
+    }
+    
+    .shopping-cart .box .content span{
+        color:var(--light-color);
+        font-size: 1.6rem;
+        {% comment %} display: flex;
+        flex-direction: row;
+        justify-content: space-between; {% endcomment %}
+    }
+    
+    .shopping-cart .box .content .quantity{
+        padding-left: 1rem;
+    }
+    
+    .shopping-cart .total{
+        font-size: 2.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        color: var(--black);
+    }
+    
+    .shopping-cart .btn{
+        display: block;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 50%;
+        margin-top: 10px; 
+    }
+    
+    .quantity-input {
+        width: 20%;
+        height: 100%;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin: 0 5px;
+    }
+    
+    .decrement,
+    .increment {
+        width: 20%; /* Adjust width as needed */
+        height: 100%;
+        font-size:18px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    
+    {% comment %} .decrement:hover,
+    .increment:hover {
+        background-color: #e0e0e0;
+    } {% endcomment %}
+
+    .btn{
+        border: .2rem solid black;
+        margin-top: 1rem;
+        display: inline-block;
+        padding: .8rem 3rem;
+        font-size: 1.7rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+
+    .btn:hover{
+        background: green;
+        color: white;
+    }
+    
+    .clear-cart-btn {
+        border: .1rem solid black;
+        margin-top: 1rem;
+        margin-left:22.3rem;
+        display: inline-block;
+        padding: .5rem 1.5rem;
+        font-size: 1.4rem;
+        border-radius: .5rem;
+        color: var(--black);
+        cursor: pointer;
+        background: none;
+    }
+    
+    .clear-cart-btn:hover{
+        background: red;
+        color: white;
+    }
+</style>
+
+<br><br><br><br><br>
+<br><br>
+<div class="shopping-cart">
+    {% for key, item in request.session.cart.items %}
+    <div class="box">
+        <a href="{% url 'item_clear' item.product_id %}"><i class="fa fa-trash"></i></a>
+        <img src="{{ item.image }}">
+        <div class="content">
+            <h3>{{ item.name }}</h3>
+            <span class="price">₹{{ item.price }}/-</span>
+            <div class="quantity">
+                <a href="{% if item.quantity > 1 %}{% url 'item_decrement' item.product_id %}{% endif %}">
+                    <button class="decrement" {% if item.quantity == 1 %}disabled{% endif %}>-</button>
+                </a>
+                <input type="text" value="{{ item.quantity }}" class="quantity-input">
+                <a href="{% url 'item_increment' item.product_id %}">
+                    <button class="increment">+</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <a href="{% url 'cart_clear' %}"><button class="clear-cart-btn">Clear Cart</button></a>
+    <div class="total">
+        Total: ₹{{cart_total_amount}}
+    </div>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <input value="{{cart_total_amount}}" name="amount" hidden>
+        <a ><button type="submit" class="btn">Checkout</button></a>
+    </form>
+</div>
+<br><br><br>
+<br><br><br>
+
+{% endblock  %}
