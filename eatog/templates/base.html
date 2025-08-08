@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerealsphere</title>
+    <link rel="icon" type="image/icon" href="{% static 'favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <a href="#" class="logo"> <i class="fa fa-cart-plus" aria-hidden="true">
+        </i> Cerealsphere</a>
+
+        <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'features' %}">Features</a>
+            <a href="{% url 'categories' %}">Categories</a>
+            <a href="{% url 'product' %}">Products</a>
+            <a href="#review">Review</a>
+            {% comment %} <a href="#blogs">Blogs</a> {% endcomment %}
+        </nav>
+
+        <div class="icons">
+            <div class="fa fa-bars" id="menu-btn"></div>
+            <div class="fa fa-search" id="search-btn"></div>
+            <a href="{% url 'cart_detail' %}"><div class="fa fa-shopping-cart" id="cart-btn"></div></a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}"><div class="fa fa-sign-out" id="login-btn"></div></a>
+            {% else %}
+            <a href="{% url 'login' %}"><div class="fa fa-user" id="login-btn"></div></a>
+            {% endif %}
+        </div>
+
+        <form action="/search/" class="search-form" method="get" >
+            <input type="search" id="query" name="query" placeholder="Search-Here">
+            <button><label for="query" class="fa fa-search"></label></button>
+        </form>
+
+    </header>
+    <!-- Header Section Ended-->
+    {% block content %}
+    
+    {% endblock content %}  
+    <!-- Footer Section Started-->
+<section class="footer">
+    <div class="box-container">
+        {% comment %} <div class="box">
+            <h3>E-Cart<i class="fa fa-shopping-basket"></i></h3>
+            <div class="share">
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="https://www.instagram.com/varad.gokhale.21?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="fa fa-instagram"></a>
+                <a href="#" class="fa fa-linkedin"></a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h3>Contact Info</h3>
+            <a href="#" class="links"><i class="fa fa-phone"></i> +919112489928</a>
+            <a href="#" class="links"><i class="fa fa-phone"></i> 8830311359</a>
+            <a href="#" class="links"><i class="fa fa-envelope"></i> pooja@gmail.com</a>
+            <a href="#" class="links"><i class="fa fa-map-marker"></i> Pune</a>
+        </div>
+
+        <div class="box">
+            <h3>Quick Links</h3>
+            <a href="{% url 'home' %}" class="links"><i class="fa fa-arrow-right"></i> Home</a>
+            <a href="{% url 'features' %}" class="links"><i class="fa fa-arrow-right"></i> Features</a>
+            <a href="{% url 'product' %}" class="links"><i class="fa fa-arrow-right"></i> Products</a>
+            <a href="{% url 'categories' %}" class="links"><i class="fa fa-arrow-right"></i> Categories</a>
+            <a href="#" class="links"><i class="fa fa-arrow-right"></i> Blogs</a>
+        </div> {% endcomment %}
+
+        {% comment %} <div class="box">
+            <h3>Newsletter</h3>
+            <p>Subscribe For Latest Updates</p>
+            <input type="email" placeholder="Your Email" class="email">
+            <input type="submit" value="Subscribe" class="btn">
+            <img src="{% static 'payment.png' %}" class="payment-img">
+        </div> {% endcomment %}
+    </div>
+
+<div class="credit">
+    Created by <span>Pooja K</span> | All Rights Reserved
+</div>
+</section>
+<!-- Footer Section Ended-->
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+</body>
+</html>
